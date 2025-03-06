@@ -1,37 +1,41 @@
 import { CloudCog, Info, Plus } from "lucide-react";
 import React, { useState } from "react";
 
-export default function AddNewProjectComponent({getValue}) {
-
-
+export default function AddNewProjectComponent({ getValue }) {
   const [infor, setinfor] = useState({});
-  
+  const [errorMessage, setErrorMessage] = useState('');
+
   const newproject = (e) => {
-
     const { name, value } = e.target;
-    setinfor((copyArray) => (
-      {
-        ...copyArray,
-        [name]: value,
-      
-      }));
-      // Value(infor)
+    setinfor((copyArray) => ({
+      ...copyArray,
+      [name]: value,
+    }));
   };
-  
-const handleSubmit=(e)=>{
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-  
-    getValue(infor)
-}
 
+    // Check if the selected date is in the past
+    const currentDate = new Date();
+    const selectedDate = new Date(infor.dueDate);
+    
+    if (selectedDate < currentDate) {
+      setErrorMessage('Due date cannot be in the past.');
+      return; // Prevent form submission if the date is in the past
+    }
 
+    // Clear error message and pass the information to the parent
+    setErrorMessage('');
+    getValue(infor);
+  };
 
   return (
     <div>
       <button
         data-modal-target="crud-modal"
         data-modal-toggle="crud-modal"
-        className=" text-white bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-3 focus:outline-none focus:ring-custom-sky-blue-500  font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500  dark:focus:ring-custom-sky-blue-500  flex items-center gap-2"
+        className="text-white bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-3 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500 flex items-center gap-2"
         type="button"
       >
         <Plus size={22} /> <span className="text-base">New Project</span>
@@ -72,9 +76,7 @@ const handleSubmit=(e)=>{
                 <span className="sr-only">Close modal</span>
               </button>
             </div>
-            <form className="p-4 md:p-5"  
-            onSubmit={handleSubmit}
-            >
+            <form className="p-4 md:p-5" onSubmit={handleSubmit}>
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
@@ -84,13 +86,13 @@ const handleSubmit=(e)=>{
                     Project Name
                   </label>
                   <input
-
                     onChange={newproject}
                     type="text"
                     name="projectName"
                     id="projectName"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Project Name"
+                    required
                   />
                 </div>
 
@@ -102,13 +104,12 @@ const handleSubmit=(e)=>{
                     Due Date
                   </label>
                   <input
-
                     onChange={newproject}
-
                     type="date"
                     name="dueDate"
                     id="dueDate"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    required
                   />
                 </div>
 
@@ -120,12 +121,13 @@ const handleSubmit=(e)=>{
                     Progress
                   </label>
                   <select
-                   onChange={newproject}
-                   name="Select"
+                    onChange={newproject}
+                    name="Select"
                     id="progress"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    required
                   >
-                    <option defaultValue="">Select Progress</option>
+                    <option value="">Select Progress</option>
                     <option value="100">100</option>
                     <option value="75">75</option>
                     <option value="50">50</option>
@@ -139,8 +141,9 @@ const handleSubmit=(e)=>{
                   >
                     Project Description
                   </label>
-                  <textarea onChange={newproject}
-                  name="text"
+                  <textarea
+                    onChange={newproject}
+                    name="text"
                     id="description"
                     rows="4"
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -148,13 +151,17 @@ const handleSubmit=(e)=>{
                   ></textarea>
                 </div>
               </div>
+
+              {errorMessage && (
+                <div className="text-red-600 text-sm mb-4">{errorMessage}</div>
+              )}
+
               <div className="text-right">
-                <button 
-                onSubmit={handleSubmit}
+                <button
                   type="submit"
                   className="text-white inline-flex items-center bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-4 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500"
                 >
-                  Create 
+                  Create
                 </button>
               </div>
             </form>

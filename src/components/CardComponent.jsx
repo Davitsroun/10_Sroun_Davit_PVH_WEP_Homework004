@@ -1,22 +1,39 @@
 import { EllipsisVertical } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddNewProjectComponent from "./AddNewProjectComponent";
 
 export default function CardComponent({ inputValue }) {
-  console.log(inputValue);
+  const calculateRemainingTime = (dueDate) => {
+    const currentDate = new Date();
+    const targetDate = new Date(dueDate);
+    const timeDifference = targetDate - currentDate;
+
+    if (timeDifference < 0) {
+      return "Due date has passed";
+    }
+
+    const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const weeksRemaining = Math.floor(daysRemaining / 7);
+    const monthsRemaining = Math.floor(daysRemaining / 30);
+
+    if (monthsRemaining > 0) {
+      return `${monthsRemaining} month${monthsRemaining > 1 ? "s" : ""} left`;
+    } else if (weeksRemaining > 0) {
+      return `${weeksRemaining} week${weeksRemaining > 1 ? "s" : ""} left`;
+    } else {
+      return `${daysRemaining} day${daysRemaining > 1 ? "s" : ""} left`;
+    }
+  };
 
   return (
-
-    <div className=" grid grid-cols-3 gap-10 pt-5">
-
+    <div className="grid grid-cols-3 gap-10 pt-5">
       {inputValue?.map((option) => (
-
-
-
-        <div className="max-w-sm p-6 bg-white rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div className="max-w-sm p-6 bg-white rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700" key={option.projectName}>
           <div className="flex justify-between mb-5">
-            {/* date */}
-            <p className={`text-custom-sky-blue font-medium`}>{option.dueDate}</p>
+            {/* Display the calculated remaining time */}
+            <p className={`text-custom-sky-blue font-medium`}>
+              {calculateRemainingTime(option.dueDate)}
+            </p>
             <EllipsisVertical size={20} color="#374957" />
           </div>
 
@@ -27,7 +44,7 @@ export default function CardComponent({ inputValue }) {
             {option.text}
           </p>
 
-          {/* progress bar */}
+          {/* Progress bar */}
           <div className="w-full flex justify-between font-medium mb-1">
             <p>Progress</p>
             <p>{option.Select}%</p>
@@ -37,15 +54,17 @@ export default function CardComponent({ inputValue }) {
             <div
               className="h-2.5 rounded-full transition-all duration-300"
               style={{
-                width: `${option.Select}%`, 
+                width: `${option.Select}%`,
                 backgroundColor:
-                  option.Select >= 75
-                    ? "#F7931E" 
+                  option.Select >= 100
+                    ? "#59D5E0"
+                    : option.Select >= 75
+                    ? "#F7931E"
                     : option.Select >= 50
-                      ? "#FFD700" 
-                      : option.Select >= 25
-                        ? "#FF69B4" 
-                        : "#00AEEF",
+                    ? "#FFD700"
+                    : option.Select >= 25
+                    ? "#FF69B4"
+                    : "#00AEEF",
               }}
             ></div>
 
@@ -66,21 +85,14 @@ export default function CardComponent({ inputValue }) {
             ></div>
           </div>
 
-          {/* deadline */}
+          {/* Deadline */}
           <div className="flex justify-end">
             <p className="font-medium bg-light-gray py-1.5 px-4 rounded-lg max-w-28 text-center">
-            
+              {calculateRemainingTime(option.dueDate)}
             </p>
           </div>
         </div>
-
       ))}
-
-
-
-
-
-
     </div>
   );
 }
