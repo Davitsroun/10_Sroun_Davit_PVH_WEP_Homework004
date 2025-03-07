@@ -3,9 +3,7 @@ import React, { useState } from "react";
 
 export default function AddNewProjectComponent({ getValue }) {
   const [infor, setinfor] = useState({});
-  const [errorMessage, setErrorMessage] = useState('');
-  const [nameErrore, setNameErrore] = useState('');
-  const [selected, setSelected] = useState('');
+
   const [errors, setErrors] = useState({
     projectName: "",
     dueDate: "",
@@ -42,8 +40,8 @@ export default function AddNewProjectComponent({ getValue }) {
     }
     
     if (selectedDate < currentDate) {
-      setErrorMessage('Due date cannot be in the past.');
-      return;
+      err.dueDate="Due date cannot be in the past";
+    
     } 
 
 
@@ -53,7 +51,7 @@ export default function AddNewProjectComponent({ getValue }) {
    
 
     if (Object.keys(err).length <= 0) {
-      setErrorMessage('');
+      setErrors('');
       setErrors({})
       getValue(infor);
       e.target.reset()
@@ -62,28 +60,9 @@ export default function AddNewProjectComponent({ getValue }) {
       setErrors({...err})
     }
 
-    // if (selectedDate < currentDate) {
-    //   setErrorMessage('Due date cannot be in the past.');
-    //   return;
-    // } 
-    // if (infor.Select == null) {
-    //   setSelected('Select cannot null.');
-    //   return;
-    // } 
-    // if (infor.projectName == null) {
-    //   setNameErrore('Name cannot null')
-    //   return;   
-    // } else{
-      
-
-      // setErrorMessage('');
-      // getValue(infor);
-      // e.target.reset();
-    // }
-     
 
   };
-console.log(nameErrore)
+
   return (
     <div>
       <button

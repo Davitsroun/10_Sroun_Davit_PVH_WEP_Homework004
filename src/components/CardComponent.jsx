@@ -37,7 +37,21 @@ export default function CardComponent({ inputValue ,serch }) {
         <div className="max-w-sm p-6 bg-white rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700" key={option.projectName}>
           <div className="flex justify-between mb-5">
             {/* Display the calculated remaining time */}
-            <p className={`text-custom-sky-blue font-medium`}>
+            <p className={` font-medium`}
+             style={{
+              color:
+                option.Select >= 100
+                  ? "#59D5E0"
+                  : option.Select >= 75
+                  ? "#F7931E"
+                  : option.Select >= 50
+                  ? "#FFD700"
+                  : option.Select >= 25
+                  ? "#FF69B4"
+                  : "#00AEEF",
+            }}   
+
+            >
               {option.dueDate}
             </p>
             <EllipsisVertical size={20} color="#374957" />
@@ -73,22 +87,6 @@ export default function CardComponent({ inputValue ,serch }) {
                     : "#00AEEF",
               }}
             ></div>
-
-            {/* <div
-              className={`border-l-4 h-5 absolute -top-1 left-1/4 rounded-full transition-all duration-300 ${option.Select >= 25 ? "border-l-custom-pink" : "border-gray-400"
-                }`}
-              title="25%"
-            ></div>
-            <div
-              className={`border-l-4 h-5 absolute -top-1 left-2/4 rounded-full transition-all duration-300 ${option.Select >= 50 ? "border-l-custom-yellow-500" : "border-gray-400"
-                }`}
-              title="50%"
-            ></div>
-            <div
-              className={`border-l-4 h-5 absolute -top-1 left-3/4 rounded-full transition-all duration-300 ${option.Select >= 75 ? "border-l-custom-carrot" : "border-gray-400"
-                }`}
-              title="75%"
-            ></div> */}
           </div>
 
           {/* Deadline */}
