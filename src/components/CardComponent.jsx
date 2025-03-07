@@ -2,7 +2,12 @@ import { EllipsisVertical } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import AddNewProjectComponent from "./AddNewProjectComponent";
 
-export default function CardComponent({ inputValue }) {
+export default function CardComponent({ inputValue ,serch }) {
+
+  console.log(serch)
+  const SearchData = inputValue.filter((e)=>
+    e.projectName.toLowerCase().includes(serch.toLowerCase())
+  )
   const calculateRemainingTime = (dueDate) => {
     const currentDate = new Date();
     const targetDate = new Date(dueDate);
@@ -25,9 +30,10 @@ export default function CardComponent({ inputValue }) {
     }
   };
 
+
   return (
     <div className="grid grid-cols-3 gap-10 pt-5">
-      {inputValue?.map((option) => (
+      {SearchData?.map((option) => (
         <div className="max-w-sm p-6 bg-white rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700" key={option.projectName}>
           <div className="flex justify-between mb-5">
             {/* Display the calculated remaining time */}
@@ -37,7 +43,7 @@ export default function CardComponent({ inputValue }) {
             <EllipsisVertical size={20} color="#374957" />
           </div>
 
-          <h5 className="capitalize mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          <h5 className="capitalize mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white overflow-hidden">
             {option.projectName}
           </h5>
           <p className="line-clamp-2 mb-3 font-normal text-justify text-gray-400 dark:text-gray-400">
@@ -68,7 +74,7 @@ export default function CardComponent({ inputValue }) {
               }}
             ></div>
 
-            <div
+            {/* <div
               className={`border-l-4 h-5 absolute -top-1 left-1/4 rounded-full transition-all duration-300 ${option.Select >= 25 ? "border-l-custom-pink" : "border-gray-400"
                 }`}
               title="25%"
@@ -82,7 +88,7 @@ export default function CardComponent({ inputValue }) {
               className={`border-l-4 h-5 absolute -top-1 left-3/4 rounded-full transition-all duration-300 ${option.Select >= 75 ? "border-l-custom-carrot" : "border-gray-400"
                 }`}
               title="75%"
-            ></div>
+            ></div> */}
           </div>
 
           {/* Deadline */}

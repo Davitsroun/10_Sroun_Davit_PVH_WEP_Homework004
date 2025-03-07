@@ -12,15 +12,21 @@ import { useState } from "react";
 
 
 function App() {
+
+  const [serch,setSerch]= useState("");
   const [inputValue , setInputValue] = useState([]);
   const getValue = (e) => {
-      // setInputValue((copyArray) => (
-      //   {
-      //     ...copyArray,e    
-      //   }));
+
       setInputValue([...inputValue, e]);
       
   }
+  const getSerch = (e) => {
+
+    setSerch(e);
+    
+}
+// console.log(serch)
+
   // console.log(inputValue);
   return (
     <div className="w-full h-screen grid grid-cols-5  grid-flow-col  pt-5  bg-gray-100 ">
@@ -28,17 +34,17 @@ function App() {
         <SidebarComponent />
       </div>
       <div className="col-span-5 px-10">
-        <TopNavbarComponent />
+        <TopNavbarComponent getSerch={getSerch} />
         <div className="w-full h-screen grid grid-cols-4 grid-flow-col pt-10 gap-10 ">
           <div className="col-span-3">
-            <DashboardComponent />
+            <DashboardComponent  />
             <div className="w-full h-screen ">
               <div className="w-full h-15 flex justify-between py-10 ">
                 <AssignmentsComponent />
                 <AddNewProjectComponent getValue={getValue} />
               </div>
-              <div className="w-full h-[63vh] bg-amber-600 overflow-auto">
-                <CardComponent inputValue={inputValue}  />
+              <div className="w-full h-[63vh] overflow-auto">
+                <CardComponent inputValue={inputValue}  serch={serch} />
                 
               </div>
 

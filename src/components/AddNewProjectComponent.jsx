@@ -1,4 +1,4 @@
-import { CloudCog, Info, Plus } from "lucide-react";
+import { CloudCog, Frown, Info, Plus } from "lucide-react";
 import React, { useState } from "react";
 
 export default function AddNewProjectComponent({ getValue }) {
@@ -11,23 +11,26 @@ export default function AddNewProjectComponent({ getValue }) {
       ...copyArray,
       [name]: value,
     }));
-  };
+    
 
+  };
+console.log(infor)
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Check if the selected date is in the past
+   
     const currentDate = new Date();
     const selectedDate = new Date(infor.dueDate);
     
     if (selectedDate < currentDate) {
       setErrorMessage('Due date cannot be in the past.');
-      return; // Prevent form submission if the date is in the past
+      return; 
+    }else{
+      getValue(infor);
     }
 
-    // Clear error message and pass the information to the parent
     setErrorMessage('');
-    getValue(infor);
+    e.target.reset();
+       
   };
 
   return (
@@ -36,6 +39,7 @@ export default function AddNewProjectComponent({ getValue }) {
         data-modal-target="crud-modal"
         data-modal-toggle="crud-modal"
         className="text-white bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-3 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500 flex items-center gap-2"
+        
         type="button"
       >
         <Plus size={22} /> <span className="text-base">New Project</span>
@@ -86,6 +90,7 @@ export default function AddNewProjectComponent({ getValue }) {
                     Project Name
                   </label>
                   <input
+
                     onChange={newproject}
                     type="text"
                     name="projectName"
@@ -158,6 +163,7 @@ export default function AddNewProjectComponent({ getValue }) {
 
               <div className="text-right">
                 <button
+                
                   type="submit"
                   className="text-white inline-flex items-center bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-4 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500"
                 >
