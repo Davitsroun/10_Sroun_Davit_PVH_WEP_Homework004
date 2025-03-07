@@ -38,7 +38,7 @@ export default function CardComponent({ inputValue ,serch }) {
           <div className="flex justify-between mb-5">
             {/* Display the calculated remaining time */}
             <p className={`text-custom-sky-blue font-medium`}>
-              {calculateRemainingTime(option.dueDate)}
+              {option.dueDate}
             </p>
             <EllipsisVertical size={20} color="#374957" />
           </div>
@@ -46,7 +46,7 @@ export default function CardComponent({ inputValue ,serch }) {
           <h5 className="capitalize mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white overflow-hidden">
             {option.projectName}
           </h5>
-          <p className="line-clamp-2 mb-3 font-normal text-justify text-gray-400 dark:text-gray-400">
+          <p className="line-clamp-2 mb-3 font-normal text-justify text-gray-400 dark:text-gray-400  truncate">
             {option.text}
           </p>
 

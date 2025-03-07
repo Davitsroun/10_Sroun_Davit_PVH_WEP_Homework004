@@ -4,6 +4,13 @@ import React, { useState } from "react";
 export default function AddNewProjectComponent({ getValue }) {
   const [infor, setinfor] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [nameErrore, setNameErrore] = useState('');
+  const [selected, setSelected] = useState('');
+  const [errors, setErrors] = useState({
+    projectName: "",
+    dueDate: "",
+    progress: "",
+  })
 
   const newproject = (e) => {
     const { name, value } = e.target;
@@ -11,35 +18,78 @@ export default function AddNewProjectComponent({ getValue }) {
       ...copyArray,
       [name]: value,
     }));
-    
+
 
   };
-console.log(infor)
+  console.log(infor)
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-   
+    let err ={};
     const currentDate = new Date();
     const selectedDate = new Date(infor.dueDate);
+
+    if(!infor.projectName) {
+      err.projectName = "ProjectName is required"
+    }
+
+
+    if(!infor.dueDate) {
+      err.dueDate = "DueDate is required"
+    }
+    if(infor.progress == "" ){
+      err.progress= "pogress cannot null"
+    }
     
     if (selectedDate < currentDate) {
       setErrorMessage('Due date cannot be in the past.');
-      return; 
-    }else{
+      return;
+    } 
+
+
+    if (selectedDate < currentDate) {
+      err.dueDate="Due date cannot be in the past.";
+    } 
+   
+
+    if (Object.keys(err).length <= 0) {
+      setErrorMessage('');
+      setErrors({})
       getValue(infor);
+      e.target.reset()
+    
+    } else {
+      setErrors({...err})
     }
 
-    setErrorMessage('');
-    e.target.reset();
-       
-  };
+    // if (selectedDate < currentDate) {
+    //   setErrorMessage('Due date cannot be in the past.');
+    //   return;
+    // } 
+    // if (infor.Select == null) {
+    //   setSelected('Select cannot null.');
+    //   return;
+    // } 
+    // if (infor.projectName == null) {
+    //   setNameErrore('Name cannot null')
+    //   return;   
+    // } else{
+      
 
+      // setErrorMessage('');
+      // getValue(infor);
+      // e.target.reset();
+    // }
+     
+
+  };
+console.log(nameErrore)
   return (
     <div>
       <button
         data-modal-target="crud-modal"
         data-modal-toggle="crud-modal"
         className="text-white bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-3 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500 flex items-center gap-2"
-        
         type="button"
       >
         <Plus size={22} /> <span className="text-base">New Project</span>
@@ -95,10 +145,15 @@ console.log(infor)
                     type="text"
                     name="projectName"
                     id="projectName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className={`bg-gray-50 border ${errors.projectName  ? `border-red-400` : `border-gray-300`} text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                     placeholder="Type Project Name"
-                    required
+                    
                   />
+
+                  {errors.projectName && (
+                    <div className="text-red-600 text-sm mb-4">{errors.projectName}</div>
+                  )}
+
                 </div>
 
                 <div className="col-span-2">
@@ -113,9 +168,13 @@ console.log(infor)
                     type="date"
                     name="dueDate"
                     id="dueDate"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    required
+                    className={`"bg-gray-50 border ${errors.dueDate  ? `border-red-400` : `border-gray-300`} text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
+                    
                   />
+                  
+              {errors.dueDate  && (
+                <div className="text-red-600 text-sm mb-4">{errors.dueDate}</div>
+              )}
                 </div>
 
                 <div className="col-span-2">
@@ -129,8 +188,8 @@ console.log(infor)
                     onChange={newproject}
                     name="Select"
                     id="progress"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    required
+                    className={`bg-gray-50 border ${errors.progress  ? `border-red-400` : `border-gray-300`} text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
+                    
                   >
                     <option value="">Select Progress</option>
                     <option value="100">100</option>
@@ -138,6 +197,10 @@ console.log(infor)
                     <option value="50">50</option>
                     <option value="25">25</option>
                   </select>
+                  {errors.progress && (
+                    <div className="text-red-600 text-sm mb-4">{errors.progress}</div>
+                  )}
+
                 </div>
                 <div className="col-span-2">
                   <label
@@ -149,7 +212,7 @@ console.log(infor)
                   <textarea
                     onChange={newproject}
                     name="text"
-                    id="description"
+                    id="description"  
                     rows="4"
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Write product description here"
@@ -157,13 +220,10 @@ console.log(infor)
                 </div>
               </div>
 
-              {errorMessage && (
-                <div className="text-red-600 text-sm mb-4">{errorMessage}</div>
-              )}
 
               <div className="text-right">
                 <button
-                
+
                   type="submit"
                   className="text-white inline-flex items-center bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-4 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500"
                 >
